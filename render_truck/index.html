@@ -140,12 +140,37 @@
 
 			}
 
-			#progress {
+			#progress-panel {
 				position: absolute;
-				top: 0;
-				height: 5px;
+				display: none;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				width: min(360px, calc(100vw - 48px));
+				z-index: 999;
+				text-align: center;
+				pointer-events: none;
+			}
+
+			#progress-label {
+				margin-bottom: 10px;
+				font-size: 14px;
+				font-weight: 700;
+				letter-spacing: 0;
+			}
+
+			#progress-track {
+				height: 8px;
+				overflow: hidden;
+				background: rgba(255,255,255,0.25);
+				border: 1px solid rgba(255,255,255,0.45);
+				border-radius: 4px;
+			}
+
+			#progress {
+				width: 0%;
+				height: 100%;
 				background: blue;
-				z-index: 99;
 				transition: width 0.1s ease-in-out;
 			}
 
@@ -247,7 +272,12 @@ other
 			
 		</div>
 
-		<div id="progress"></div>
+		<div id="progress-panel">
+			<div id="progress-label">Loading model 0%</div>
+			<div id="progress-track">
+				<div id="progress"></div>
+			</div>
+		</div>
 
 		<div id="message"></div>
 		<div class="scene" id="spinner">

@@ -313,6 +313,9 @@ function createWorker(self) {
 
     let tmc3Module = null;
     let pendingMobileGS = null;
+    const reportProgress = (phase, percent) => {
+        postMessage({ progress: { phase, percent } });
+    };
 
     try {
         // Replace your self.Module inside createWorker with this:
@@ -328,6 +331,7 @@ function createWorker(self) {
                 console.log("TMC3 Decoder Ready!");
                 if (pendingMobileGS) {
                     try {
+                        reportProgress("decompose", 52);
                         buffer = await processMobileGSData(pendingMobileGS.buffer);
                         postMessage({ buffer: buffer, save: pendingMobileGS.save });
                         throttledSort();
@@ -859,6 +863,7 @@ function contractToUnisphere(x, y, z) {
 
     // --- 2. MAIN DECODE FUNCTION ---
     async function processMobileGSData(arrayBuffer) {
+        reportProgress("decompose", 55);
         const save_dict = parseMobileGSFile(arrayBuffer);
         if (!tmc3Module) throw new Error("TMC3 WASM not ready.");
 
@@ -872,6 +877,7 @@ function contractToUnisphere(x, y, z) {
             console.time("TMC3 Decode");
             mainFunc(['--mode=1', '--compressedStreamPath=/xyz.bin', '--reconstructedDataPath=/xyz.ply']);
             console.timeEnd("TMC3 Decode");
+            reportProgress("decompose", 64);
         } catch (err) {
             if (err !== 0 && err.status !== 0 && err.name !== 'ExitStatus') {
                 throw new Error("TMC3 failed to decode.");
@@ -951,6 +957,7 @@ function contractToUnisphere(x, y, z) {
             xyz_raw_float[i * 3 + 1] = halfToFloat((iy ^ 0x8000) & 0xFFFF);
             xyz_raw_float[i * 3 + 2] = halfToFloat((iz ^ 0x8000) & 0xFFFF);
         }
+        reportProgress("decompose", 70);
 
         console.time("Numeric Sort");
         // 3. Subtract Minimums to create normalized integers for sorting
@@ -978,6 +985,7 @@ function contractToUnisphere(x, y, z) {
             return ax - bx;
         });
         console.timeEnd("Numeric Sort");
+        reportProgress("decompose", 74);
 
         // 5. Populate the final sorted float array
         let xyz_float = new Float32Array(vertexCount * 3);
@@ -992,6 +1000,7 @@ function contractToUnisphere(x, y, z) {
         const rotation = decodeVQAttributesConcat(save_dict['rotation_index'], save_dict['rotation_htable'], save_dict['rotation_code']);
         const appearance = decodeVQAttributesConcat(save_dict['app_index'], save_dict['app_htable'], save_dict['app_code']);
         console.timeEnd("VQ Decode");
+        reportProgress("decompose", 78);
 
         buffer = new ArrayBuffer(vertexCount * 32);
         const f_buffer = new Float32Array(buffer);
@@ -1029,7 +1038,11 @@ function contractToUnisphere(x, y, z) {
 
         const sigmoid = (x) => 1 / (1 + Math.exp(-x));
         console.time("Neural Decode Loop");
+        const progressStep = Math.max(1, Math.floor(vertexCount / 80));
         for (let i = 0; i < vertexCount; i++) {
+            if (i % progressStep === 0) {
+                reportProgress("decompose", 78 + (i / vertexCount) * 17);
+            }
             let x = xyz_float[i*3], y = xyz_float[i*3+1], z = xyz_float[i*3+2];
             
             // Manual indexing avoids `.subarray()` object creation
@@ -1164,6 +1177,7 @@ function contractToUnisphere(x, y, z) {
           
      
         console.timeEnd("Neural Decode Loop");
+        reportProgress("decompose", 95);
         Object.keys(save_dict).forEach(key => delete save_dict[key]);
         return buffer;
     }
@@ -1178,6 +1192,7 @@ function contractToUnisphere(x, y, z) {
                 pendingMobileGS = { buffer: e.data.mobilegs, save: !!e.data.save };
             } else {
                 try {
+                    reportProgress("decompose", 52);
                     buffer = await processMobileGSData(e.data.mobilegs);
                     postMessage({ buffer: buffer, save: !!e.data.save });
                     throttledSort();
@@ -1380,6 +1395,38 @@ async function main() {
 
 
     let carousel = true;
+    const progressPanel = document.getElementById("progress-panel");
+    const progress = document.getElementById("progress");
+    const progressLabel = document.getElementById("progress-label");
+    let progressVisible = false;
+    const progressText = {
+        load: "Loading model",
+        decompose: "Decomposing model",
+        prepare: "Preparing model",
+    };
+    const showProgress = (percent, label = progressText.load) => {
+        if (!progress) return;
+        progressVisible = true;
+        const clamped = Math.max(0, Math.min(100, percent));
+        if (progressPanel) progressPanel.style.display = "block";
+        progress.style.width = clamped + "%";
+        if (progressLabel) {
+            progressLabel.innerText = label + " " + Math.round(clamped) + "%";
+        }
+    };
+    const hideProgress = () => {
+        if (!progress) return;
+        progressVisible = false;
+        progress.style.width = "100%";
+        setTimeout(() => {
+            if (!progressVisible) {
+                if (progressPanel) progressPanel.style.display = "none";
+                progress.style.width = "0%";
+            }
+        }, 200);
+    };
+
+    showProgress(0);
     const params = new URLSearchParams(location.search);
     try {
         viewMatrix = JSON.parse(decodeURIComponent(location.hash.slice(1)));
@@ -1535,7 +1582,13 @@ async function main() {
     resize();
 
     worker.onmessage = (e) => {
-        if (e.data.buffer) {
+        if (e.data.progress) {
+            showProgress(
+                e.data.progress.percent,
+                progressText[e.data.progress.phase] || progressText.prepare,
+            );
+        } else if (e.data.buffer) {
+            showProgress(96, progressText.prepare);
             splatData = new Uint8Array(e.data.buffer);
             if (e.data.save) {
                 const blob = new Blob([splatData.buffer], {
@@ -1548,6 +1601,7 @@ async function main() {
                 link.click();
             }
         } else if (e.data.texdata) {
+            showProgress(98, progressText.prepare);
             const { texdata, texwidth, texheight } = e.data;
             console.log("Received main texture data:", texwidth, "x", texheight);
             gl.activeTexture(gl.TEXTURE0);
@@ -1578,6 +1632,7 @@ async function main() {
             );
             console.log("Main texture updated successfully");
         } else if (e.data.texdata_sh) {
+            showProgress(99, progressText.prepare);
             const { texdata_sh, texwidth_sh, texheight_sh } = e.data;
             console.log("Received SH texture data:", texwidth_sh, "x", texheight_sh);
             gl.activeTexture(gl.TEXTURE1);
@@ -1593,6 +1648,7 @@ async function main() {
             gl.bindBuffer(gl.ARRAY_BUFFER, indexBuffer);
             gl.bufferData(gl.ARRAY_BUFFER, depthIndex, gl.DYNAMIC_DRAW);
             vertexCount = e.data.vertexCount;
+            hideProgress();
         }
     };
 
@@ -2077,12 +2133,6 @@ async function main() {
             document.getElementById("spinner").style.display = "";
             start = Date.now() + 2000;
         }
-        const progress = (100 * vertexCount) / (splatData.length / rowLength);
-        if (progress < 100) {
-            document.getElementById("progress").style.width = progress + "%";
-        } else {
-            document.getElementById("progress").style.display = "none";
-        }
         fps.innerText = Math.round(avgFps) + " fps";
         if (isNaN(currentCameraIndex)) {
             camid.innerText = "";
@@ -2119,9 +2169,16 @@ async function main() {
             fr.readAsText(file);
         } else {
             stopLoading = true;
+            showProgress(0, progressText.load);
+            fr.onprogress = (event) => {
+                if (event.lengthComputable) {
+                    showProgress((event.loaded / event.total) * 50, progressText.load);
+                }
+            };
             fr.onload = () => {
                 splatData = new Uint8Array(fr.result);
                 console.log("Loaded File length:", splatData.length);
+                showProgress(50, progressText.decompose);
 
                 if (isPly(splatData)) {
                     worker.postMessage({ ply: splatData.buffer, save: true });
@@ -2170,9 +2227,15 @@ async function main() {
 
         chunks.push(value);
         bytesRead += value.length;
+        if (contentLength > 0) {
+            showProgress((bytesRead / contentLength) * 50, progressText.load);
+        } else {
+            showProgress(Math.min(50, 5 + chunks.length * 2), progressText.load);
+        }
     }
 
     if (stopLoading) return;
+    showProgress(50, progressText.decompose);
 
     // ADD THIS LINE: Re-allocate array to the exact downloaded size
     splatData = new Uint8Array(bytesRead);
