@@ -1386,7 +1386,7 @@ async function main() {
         carousel = false;
     } catch (err) { }
     const url = new URL(
-           params.get("url") || "bicycle.json",
+           params.get("url") || "garden.json",
         "https://huggingface.co/datasets/mobile-gs2/mobile-gs2/resolve/main/",
         // "comp.json",
         // location.href,
