@@ -1385,13 +1385,13 @@ async function main() {
         viewMatrix = JSON.parse(decodeURIComponent(location.hash.slice(1)));
         carousel = false;
     } catch (err) { }
-    // const url = new URL(
-    //        params.get("url") || "bicycle.json",
-    //     "https://huggingface.co/datasets/mobile-gs2/mobile-gs2/resolve/main/",
-    //     // "comp.json",
-    //     // location.href,
-    // );
-    const url = new URL('/models/bicycle.json', window.location.origin).href;
+    const url = new URL(
+           params.get("url") || "bicycle.json",
+        "https://huggingface.co/datasets/mobile-gs2/mobile-gs2/resolve/main/",
+        // "comp.json",
+        // location.href,
+    );
+    // const url = new URL('/models/bicycle.json', window.location.origin).href;
 
     const req = await fetch(url, {
         mode: "cors",
