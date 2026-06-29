@@ -181,7 +181,7 @@ Gaussian Splatting</h1>
                 type="video/mp4">
       </video>
       <h2 class="subtitle has-text-centered">
-        <span class="highlight" >Flux-GS</span> break through the 120 display FPS limit for real-time rendering on Mobile</span>
+        <span class="highlight" >Flux-GS</span> break through the 120 display FPS limit for real-time rendering on Mobile with the perfect first-order Spherical Harmonics</span>
       </h2>
     </div>
   </div>
@@ -328,10 +328,10 @@ Flux-GS utilizes WebGL to enable seamless cross-platform rendering.
     <span class="highlight" > Gaussian parameter distribution and Spherical Harmonic fidelity
 analysis. </span>
 
-  <span class="highlight" >Left:</span>Per Gaussian memory footprint across 3DGS variants. Flux-GS achieves
+  <span class="highlight" >Left:</span > Per Gaussian memory footprint across 3DGS variants. Flux-GS achieves
 significant compression (61% and 26% reductions) by optimizing Spherical Harmonics
 (SH) coefficients and decoupling SH into the base and view-independent components.
-  <span class="highlight" >Right:</span>Qualitative comparison demonstrates that Flux-GS with only first-order SH can
+  <span class="highlight" >Right:</span> Qualitative comparison demonstrates that Flux-GS with only first-order SH can
 render high-fidelity high-frequency details comparable to 3DGS.
 </p>
 
@@ -344,7 +344,7 @@ render high-fidelity high-frequency details comparable to 3DGS.
   <div class="container is-max-desktop">
         <h2 class="title is-3">Rendering Pipeline</h2>
 
-      <img src="static/images/method.png" alt="">
+      <img class="content-figure" src="static/images/method.png" alt="">
 <p>
 
   Overview of the Flux-GS framework. Our method optimizes third-order
@@ -399,32 +399,18 @@ including the lightweight MLPs used for view-dependent effects.
 
 <!-- <hr> -->
 
-<!-- </section class="section">
+ </section class="section">
   <div class="container is-max-desktop">
 
-        <h2 class="title is-3">Compare with 3DGS</h2>
+        <h2 class="title is-3">Rendering
+        </h2>
 
       <video autoplay muted loop playsinline controls>
         <source src="./static/videos/bicycle.mp4"
                 type="video/mp4">
       </video>
-    <video autoplay muted loop playsinline controls>
-        <source src="./static/videos/garden.mp4"
-                type="video/mp4">
-      </video>
-
-        <video autoplay muted loop playsinline controls>
-        <source src="./static/videos/room.mp4"
-                type="video/mp4">
-      </video>
-
-
-      <video autoplay muted loop playsinline controls>
-        <source src="./static/videos/kitchen.mp4"
-                type="video/mp4">
-      </video>
-  </div>
-</section> -->
+ 
+</section> 
 
 
 

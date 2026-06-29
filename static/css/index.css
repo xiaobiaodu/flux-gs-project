@@ -117,6 +117,12 @@ body {
 .publication-body img {
 }
 
+.content-figure {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .results-carousel {
   overflow: hidden;
 }
