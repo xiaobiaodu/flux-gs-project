@@ -5,7 +5,7 @@ We significantly reduce GS storage by quantization and decode them in the `rende
 All decoding and rendering functions are in `main.js` file.
 
 
-You can [try it out here](https://antimatter15.com/splat/).
+You can [try it out here](https://xiaobiaodu.github.io/flux-gs-project/render_garden/index.html).
 
 
 
@@ -18,6 +18,8 @@ You can [try it out here](https://antimatter15.com/splat/).
 ## 👍 **Acknowledgement**
 This work is built on many amazing research works and open-source projects, thanks a lot to all the authors for sharing!
 * [splat](https://github.com/antimatter15/splat)
+
+* [flux-gs](https://github.com/xiaobiaodu/Flux-GS)
 
 
 
