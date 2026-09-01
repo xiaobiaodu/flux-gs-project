@@ -20,3 +20,129 @@
   color: #66820e;
   border-color: #66820e;
 }
+
+.hero-section {
+  grid-template-columns: minmax(0, 920px);
+}
+
+.project-kicker {
+  margin-bottom: 18px;
+  color: #71896d;
+  font: 600 clamp(28px, 4vw, 48px)/1 "DM Mono", monospace;
+  letter-spacing: -0.05em;
+}
+
+.hero-copy .paper-title {
+  max-width: 1050px;
+  font-size: clamp(48px, 7.2vw, 104px);
+  line-height: 0.95;
+  letter-spacing: -0.065em;
+}
+
+.demo-section {
+  position: relative;
+}
+
+.demo-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 24% 22%, rgba(199, 255, 71, 0.12), transparent 34%);
+}
+
+.demo-section .shell {
+  position: relative;
+}
+
+.demo-badge {
+  width: fit-content;
+  margin-bottom: 24px;
+  padding: 9px 13px;
+  border: 1px solid rgba(199, 255, 71, 0.32);
+  border-radius: 999px;
+  color: #d9ff7d;
+  background: rgba(199, 255, 71, 0.07);
+  font: 500 11px/1 "DM Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.demo-badge span {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 7px;
+  border-radius: 50%;
+  background: var(--acid);
+  box-shadow: 0 0 12px var(--acid);
+}
+
+.demo-header h2 em {
+  color: var(--acid);
+  font-style: normal;
+}
+
+.demo-invite p {
+  margin-bottom: 25px;
+}
+
+.demo-invite a {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--acid);
+  color: #fff;
+  font: 500 12px/1 "DM Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.demo-invite a span {
+  color: var(--acid);
+  font-size: 18px;
+  transition: transform 0.2s ease;
+}
+
+.demo-invite a:hover span {
+  transform: translateY(4px);
+}
+
+.scene-name small {
+  display: block;
+  margin-top: 9px;
+  color: #91a39b;
+  font: 500 10px/1 "DM Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.scene-card:hover .scene-name small,
+.scene-card:focus-visible .scene-name small {
+  opacity: 1;
+  transform: none;
+}
+
+.scene-card:focus-visible {
+  outline: 2px solid var(--acid);
+  outline-offset: -4px;
+}
+
+@media (max-width: 640px) {
+  .demo-badge {
+    margin-bottom: 18px;
+  }
+
+  .demo-header h2 {
+    font-size: clamp(52px, 16vw, 72px);
+  }
+
+  .scene-name small {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Mobile-GS enables real-time, compact Gaussian Splatting on mobile devices with order-independent rendering.">
-  <meta name="keywords" content="Mobile-GS, Gaussian Splatting, 3DGS, mobile rendering, ECCV 2026">
+  <meta name="description" content="Flux-GS uses Monte Carlo energy aggregation for high-fidelity, efficient mobile 3D Gaussian Splatting.">
+  <meta name="keywords" content="Flux-GS, Monte Carlo Energy Aggregation, Gaussian Splatting, 3DGS, mobile rendering, ECCV 2026">
   <meta name="theme-color" content="#07110f">
-  <title>Mobile-GS — Real-time Gaussian Splatting for Mobile Devices</title>
+  <title>Flux-GS — Monte Carlo Energy Aggregation for Mobile 3D Gaussian Splatting</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -20,11 +20,11 @@
   <div class="page-noise" aria-hidden="true"></div>
   <header class="site-header">
     <nav class="nav shell" aria-label="Primary navigation">
-      <a class="brand" href="#top" aria-label="Mobile-GS home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Mobile-GS</span></a>
+      <a class="brand" href="#top" aria-label="Flux-GS home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Flux-GS</span></a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open navigation"><span></span><span></span></button>
       <div class="nav-links" id="nav-links">
         <a href="#overview">Overview</a><a href="#method">Method</a><a href="#demo">Live demo</a>
-        <a href="https://github.com/xiaobiaodu/mobile-gs" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+        <a href="https://github.com/xiaobiaodu/Flux-GS" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
       </div>
     </nav>
   </header>
@@ -33,27 +33,25 @@
     <section class="hero-section shell">
       <div class="hero-copy reveal">
         <div class="eyebrow"><span></span> ECCV 2026</div>
-        <h1>Gaussian splats,<br><em>untethered.</em></h1>
-        <p class="hero-lede">Real-time, high-quality 3D Gaussian Splatting designed from the ground up for mobile hardware.</p>
+        <div class="project-kicker">Flux-GS</div>
+        <h1 class="paper-title">Monte Carlo Energy Aggregation for Mobile 3D Gaussian Splatting</h1>
+        <p class="hero-lede">Monte Carlo energy aggregation for high-fidelity, efficient 3D Gaussian Splatting on mobile platforms.</p>
         <div class="author-list" aria-label="Authors">
           <a href="https://xiaobiaodu.github.io/" target="_blank" rel="noopener">Xiaobiao Du</a>
-          <a href="https://wangyida.github.io/" target="_blank" rel="noopener">Yida Wang</a>
-          <span>Kun Zhan</span>
-          <a href="https://sites.google.com/view/xinyus-homepage/Home" target="_blank" rel="noopener">Xin Yu</a>
+          <span>YuAn Wang</span>
+          <span>Hao Li</span>
+          <span>Bosheng Wang</span>
+          <span>Xun Sun</span>
+          <a href="https://xinyu-au.github.io/" target="_blank" rel="noopener">Xin Yu</a>
         </div>
         <div class="hero-actions">
-          <a class="button button-primary" href="https://arxiv.org/abs/2603.11531" target="_blank" rel="noopener"><i class="fas fa-file-alt" aria-hidden="true"></i> Read the paper</a>
-          <a class="button button-secondary" href="https://github.com/xiaobiaodu/mobile-gs" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> View code</a>
+          <a class="button button-primary" href="https://arxiv.org/abs/2606.30017" target="_blank" rel="noopener"><i class="fas fa-file-alt" aria-hidden="true"></i> Read the paper</a>
+          <a class="button button-secondary" href="https://github.com/xiaobiaodu/Flux-GS" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> View code</a>
         </div>
-      </div>
-      <div class="hero-metrics reveal" aria-label="Key results">
-        <div class="metric metric-main"><span class="metric-value">116</span><span class="metric-unit">FPS</span><p>at 1600 × 1063 on Snapdragon 8 Gen 3</p></div>
-        <div class="metric"><span class="metric-value">4.8</span><span class="metric-unit">MB</span><p>compact scene representation</p></div>
-        <div class="metric"><span class="metric-value">1098</span><span class="metric-unit">FPS</span><p>desktop rendering on unbounded scenes</p></div>
       </div>
     </section>
 
-    <section class="media-section shell reveal" aria-label="Mobile-GS teaser video">
+    <section class="media-section shell reveal" aria-label="Flux-GS teaser video">
       <div class="media-frame">
         <video id="teaser" autoplay muted loop playsinline controls preload="metadata"><source src="static/videos/teaser.mp4" type="video/mp4">Your browser does not support HTML video.</video>
         <div class="media-label"><span class="live-dot"></span> Real-time mobile capture</div>
@@ -64,39 +62,44 @@
     <section class="section shell" id="overview">
       <div class="section-heading reveal"><div class="section-index">01 / Overview</div><h2>Desktop-class rendering.<br>Now in your pocket.</h2></div>
       <div class="overview-grid">
-        <p class="lead-copy reveal">3D Gaussian Splatting delivers exceptional visual quality, but its sorting overhead and storage footprint make mobile deployment difficult. Mobile-GS removes those constraints without giving up fidelity.</p>
-        <div class="abstract-copy reveal"><p>We identify alpha blending—and its costly depth sorting—as the primary computational bottleneck. Our depth-aware order-independent renderer eliminates sorting and renders all Gaussians associated with a target pixel in a single pass.</p><p>A neural view-dependent enhancement strategy restores accurate appearance in overlapping geometry, while spherical harmonics distillation, neural vector quantization, and contribution-based pruning dramatically reduce storage.</p></div>
+        <p class="lead-copy reveal">High-order spherical harmonics preserve rich view-dependent appearance, but their inference and storage overhead make them difficult to deploy on resource-constrained mobile platforms.</p>
+        <div class="abstract-copy reveal"><p>Flux-GS introduces a Monte Carlo Specular Energy Aggregator that samples third-order radiance residuals and gathers visually salient specular energy into a compact latent space. This preserves expressive lighting in lower-order bands without distillation or pre-training.</p><p>An Attribute-Conditioned SH Enhancement module recovers high-frequency detail through Gaussian-aware offsets before inference. Multi-view alpha guidance further improves structural consistency while removing redundant primitives.</p></div>
       </div>
     </section>
 
     <section class="demo-section" id="demo">
       <div class="shell">
-        <div class="demo-header reveal"><div><div class="section-index section-index-light">Interactive demo</div><h2>Try it on your phone.</h2></div><p>Choose a scene, drag to explore, and experience Gaussian Splatting in your mobile browser.</p></div>
-        <div class="scene-grid reveal">
-          <a class="scene-card" href="render_garden/index.html"><span class="scene-number">01</span><span class="scene-name">Garden</span><span class="scene-arrow" aria-hidden="true">↗</span><span class="scene-orbit scene-orbit-a" aria-hidden="true"></span></a>
-          <a class="scene-card" href="render_bicycle/index.html"><span class="scene-number">02</span><span class="scene-name">Bicycle</span><span class="scene-arrow" aria-hidden="true">↗</span><span class="scene-orbit scene-orbit-b" aria-hidden="true"></span></a>
-          <a class="scene-card" href="render_counter/index.html"><span class="scene-number">03</span><span class="scene-name">Counter</span><span class="scene-arrow" aria-hidden="true">↗</span><span class="scene-orbit scene-orbit-c" aria-hidden="true"></span></a>
-          <a class="scene-card" href="render_truck/index.html"><span class="scene-number">04</span><span class="scene-name">Truck</span><span class="scene-arrow" aria-hidden="true">↗</span><span class="scene-orbit scene-orbit-d" aria-hidden="true"></span></a>
+        <div class="demo-header reveal">
+          <div>
+            <div class="demo-badge"><span></span> Live WebGL demo</div>
+            <h2>Try it on<br><em>your phone.</em></h2>
+          </div>
+          <div class="demo-invite">
+            <p>No install. No special app. Choose a scene and experience real-time Gaussian Splatting directly in your mobile browser.</p>
+            <a href="#demo-scenes">Pick a scene <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+        <div class="scene-grid reveal" id="demo-scenes">
+          <a class="scene-card" href="render_garden/index.html"><span class="scene-number">01 · Outdoor</span><span class="scene-name">Garden <small>Open demo</small></span><span class="scene-arrow" aria-hidden="true">↗</span><span class="scene-orbit scene-orbit-a" aria-hidden="true"></span></a>
+          <a class="scene-card" href="render_bicycle/index.html"><span class="scene-number">02 · Outdoor</span><span class="scene-name">Bicycle <small>Open demo</small></span><span class="scene-arrow" aria-hidden="true">↗</span><span class="scene-orbit scene-orbit-b" aria-hidden="true"></span></a>
+          <a class="scene-card" href="render_counter/index.html"><span class="scene-number">03 · Indoor</span><span class="scene-name">Counter <small>Open demo</small></span><span class="scene-arrow" aria-hidden="true">↗</span><span class="scene-orbit scene-orbit-c" aria-hidden="true"></span></a>
+          <a class="scene-card" href="render_truck/index.html"><span class="scene-number">04 · Outdoor</span><span class="scene-name">Truck <small>Open demo</small></span><span class="scene-arrow" aria-hidden="true">↗</span><span class="scene-orbit scene-orbit-d" aria-hidden="true"></span></a>
         </div>
       </div>
     </section>
 
     <section class="section shell" id="method">
-      <div class="section-heading method-heading reveal"><div class="section-index">02 / Method</div><h2>Sort less.<br>Render more.</h2><p>Three tightly integrated ideas make high-quality Gaussian Splatting practical on constrained hardware.</p></div>
+      <div class="section-heading method-heading reveal"><div class="section-index">02 / Method</div><h2>Preserve energy.<br>Reduce overhead.</h2><p>Three complementary components retain expressive appearance while building a compact, mobile-ready representation.</p></div>
       <div class="method-grid">
-        <article class="method-card reveal"><div class="method-number">01</div><div class="method-visual visual-sort" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><h3>Order-independent rendering</h3><p>Depth-aware blending removes the expensive per-tile Gaussian sorting stage and processes a pixel's Gaussians in one pass.</p><span class="method-tag">No sorting</span></article>
-        <article class="method-card reveal"><div class="method-number">02</div><div class="method-visual visual-view" aria-hidden="true"><div class="view-core"></div><i></i><i></i><i></i></div><h3>View-dependent enhancement</h3><p>A lightweight MLP predicts view-dependent opacity from geometry, appearance attributes, and viewing direction.</p><span class="method-tag">Better fidelity</span></article>
-        <article class="method-card reveal"><div class="method-number">03</div><div class="method-visual visual-compress" aria-hidden="true"><div class="compress-before"></div><span>→</span><div class="compress-after"></div></div><h3>Neural compression</h3><p>SH distillation, vector quantization, and contribution-based pruning create a compact mobile-ready representation.</p><span class="method-tag">4.8 MB scenes</span></article>
+        <article class="method-card reveal"><div class="method-number">01</div><div class="method-visual visual-sort" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><h3>Monte Carlo energy aggregation</h3><p>Samples third-order radiance residuals and aggregates specular energy into a compact latent space for efficient lower-order representation.</p><span class="method-tag">Specular energy</span></article>
+        <article class="method-card reveal"><div class="method-number">02</div><div class="method-visual visual-view" aria-hidden="true"><div class="view-core"></div><i></i><i></i><i></i></div><h3>Attribute-conditioned SH enhancement</h3><p>Predicts Gaussian-aware offsets from intrinsic attributes to enhance first-order spherical harmonics before inference.</p><span class="method-tag">No inference overhead</span></article>
+        <article class="method-card reveal"><div class="method-number">03</div><div class="method-visual visual-compress" aria-hidden="true"><div class="compress-before"></div><span>→</span><div class="compress-after"></div></div><h3>Multi-view alpha guidance</h3><p>Guides densification and pruning across multiple views to improve structural consistency and precisely remove redundant Gaussians.</p><span class="method-tag">Consistent &amp; compact</span></article>
       </div>
     </section>
 
-    <section class="finding-section shell reveal">
-      <div class="finding-label">Key finding</div><blockquote>Sorting was the bottleneck.<br><em>So we removed it.</em></blockquote><p>Runtime analysis shows that sorting dominates inference cost in standard 3DGS. Removing it unlocks several-fold acceleration, while our learned appearance model preserves visual quality.</p>
-    </section>
-
-    <section class="paper-section shell reveal"><div class="paper-card"><div><div class="section-index section-index-light">Mobile-GS · ECCV 2026</div><h2>Explore the full research.</h2></div><div class="paper-actions"><a href="https://arxiv.org/abs/2603.11531" target="_blank" rel="noopener">Paper <span>↗</span></a><a href="https://github.com/xiaobiaodu/mobile-gs" target="_blank" rel="noopener">Code <span>↗</span></a></div></div></section>
+    <section class="paper-section shell reveal"><div class="paper-card"><div><div class="section-index section-index-light">Flux-GS · ECCV 2026</div><h2>Explore the full research.</h2></div><div class="paper-actions"><a href="https://arxiv.org/abs/2606.30017" target="_blank" rel="noopener">Paper <span>↗</span></a><a href="https://github.com/xiaobiaodu/Flux-GS" target="_blank" rel="noopener">Code <span>↗</span></a></div></div></section>
   </main>
 
-  <footer class="footer shell"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Mobile-GS</span></a><p>Real-time Gaussian Splatting for mobile devices.</p><p class="license">Website content available under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</p></footer>
+  <footer class="footer shell"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Flux-GS</span></a><p>Monte Carlo energy aggregation for mobile 3D Gaussian Splatting.</p><p class="license">Website content available under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</p></footer>
 </body>
 </html>
