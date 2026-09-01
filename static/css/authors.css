@@ -1,0 +1,22 @@
+.hero-lede {
+  margin-bottom: 20px;
+}
+
+.author-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-bottom: 30px;
+  color: #4e6158;
+  font: 500 13px/1.5 "DM Mono", monospace;
+}
+
+.author-list a {
+  border-bottom: 1px solid rgba(16, 23, 20, 0.28);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.author-list a:hover {
+  color: #66820e;
+  border-color: #66820e;
+}

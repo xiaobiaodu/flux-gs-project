@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Mobile-GS enables real-time, compact Gaussian Splatting on mobile devices with order-independent rendering.">
-  <meta name="keywords" content="Mobile-GS, Gaussian Splatting, 3DGS, mobile rendering, ICLR 2026">
+  <meta name="keywords" content="Mobile-GS, Gaussian Splatting, 3DGS, mobile rendering, ECCV 2026">
   <meta name="theme-color" content="#07110f">
   <title>Mobile-GS — Real-time Gaussian Splatting for Mobile Devices</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/authors.css">
   <script defer src="./static/js/fontawesome.all.min.js"></script>
   <script defer src="./static/js/index.js"></script>
 </head>
@@ -31,9 +32,15 @@
   <main id="top">
     <section class="hero-section shell">
       <div class="hero-copy reveal">
-        <div class="eyebrow"><span></span> ICLR 2026</div>
+        <div class="eyebrow"><span></span> ECCV 2026</div>
         <h1>Gaussian splats,<br><em>untethered.</em></h1>
         <p class="hero-lede">Real-time, high-quality 3D Gaussian Splatting designed from the ground up for mobile hardware.</p>
+        <div class="author-list" aria-label="Authors">
+          <a href="https://xiaobiaodu.github.io/" target="_blank" rel="noopener">Xiaobiao Du</a>
+          <a href="https://wangyida.github.io/" target="_blank" rel="noopener">Yida Wang</a>
+          <span>Kun Zhan</span>
+          <a href="https://sites.google.com/view/xinyus-homepage/Home" target="_blank" rel="noopener">Xin Yu</a>
+        </div>
         <div class="hero-actions">
           <a class="button button-primary" href="https://arxiv.org/abs/2603.11531" target="_blank" rel="noopener"><i class="fas fa-file-alt" aria-hidden="true"></i> Read the paper</a>
           <a class="button button-secondary" href="https://github.com/xiaobiaodu/mobile-gs" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> View code</a>
@@ -87,7 +94,7 @@
       <div class="finding-label">Key finding</div><blockquote>Sorting was the bottleneck.<br><em>So we removed it.</em></blockquote><p>Runtime analysis shows that sorting dominates inference cost in standard 3DGS. Removing it unlocks several-fold acceleration, while our learned appearance model preserves visual quality.</p>
     </section>
 
-    <section class="paper-section shell reveal"><div class="paper-card"><div><div class="section-index section-index-light">Mobile-GS · ICLR 2026</div><h2>Explore the full research.</h2></div><div class="paper-actions"><a href="https://arxiv.org/abs/2603.11531" target="_blank" rel="noopener">Paper <span>↗</span></a><a href="https://github.com/xiaobiaodu/mobile-gs" target="_blank" rel="noopener">Code <span>↗</span></a></div></div></section>
+    <section class="paper-section shell reveal"><div class="paper-card"><div><div class="section-index section-index-light">Mobile-GS · ECCV 2026</div><h2>Explore the full research.</h2></div><div class="paper-actions"><a href="https://arxiv.org/abs/2603.11531" target="_blank" rel="noopener">Paper <span>↗</span></a><a href="https://github.com/xiaobiaodu/mobile-gs" target="_blank" rel="noopener">Code <span>↗</span></a></div></div></section>
   </main>
 
   <footer class="footer shell"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Mobile-GS</span></a><p>Real-time Gaussian Splatting for mobile devices.</p><p class="license">Website content available under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</p></footer>
