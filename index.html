@@ -1,412 +1,95 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="description"
-        content="Deformable Neural Radiance Fields creates free-viewpoint portraits (nerfies) from casually captured videos.">
-  <meta name="keywords" content="Nerfies, D-NeRF, NeRF">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mobile-GS2</title>
-
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-
-    gtag('js', new Date());
-
-    gtag('config', 'G-PYVRSFMDRL');
-  </script>
-
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-        rel="stylesheet">
-
-  <link rel="stylesheet" href="./static/css/bulma.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <meta name="description" content="Mobile-GS enables real-time, compact Gaussian Splatting on mobile devices with order-independent rendering.">
+  <meta name="keywords" content="Mobile-GS, Gaussian Splatting, 3DGS, mobile rendering, ICLR 2026">
+  <meta name="theme-color" content="#07110f">
+  <title>Mobile-GS — Real-time Gaussian Splatting for Mobile Devices</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
-<!--  <link rel="icon" href="static/images/favicon.svg">-->
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="./static/js/fontawesome.all.min.js"></script>
-  <script src="./static/js/bulma-carousel.min.js"></script>
-  <script src="./static/js/bulma-slider.min.js"></script>
-  <script src="./static/js/index.js"></script>
+  <script defer src="./static/js/index.js"></script>
 </head>
 <body>
-
-<nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-  </div>
-  <div class="navbar-menu">
-    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
-<!--      <a class="navbar-item" href="https://keunhong.com">-->
-      <a class="navbar-item">
-      <span class="icon">
-          <i class="fas fa-home"></i>
-      </span>
-      </a>
-
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-          More Research
-        </a>
-       <div class="navbar-dropdown">
-         <a class="navbar-item" href="https://xiaobiaodu.github.io/dreamcar-project/">
-           DreamCar
-         </a>
-        <a class="navbar-item" href="https://xiaobiaodu.github.io/3drealcar/">
-                  3DRealCar
-         </a>
-         
-             <a class="navbar-item" href="https://xiaobiaodu.github.io/mvgs-project/">
-                  MVGS
-         </a>
-               <a class="navbar-item" href="https://xiaobiaodu.github.io/reflectivegs/">
-                  RGS
-         </a>
+  <div class="page-noise" aria-hidden="true"></div>
+  <header class="site-header">
+    <nav class="nav shell" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Mobile-GS home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Mobile-GS</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open navigation"><span></span><span></span></button>
+      <div class="nav-links" id="nav-links">
+        <a href="#overview">Overview</a><a href="#method">Method</a><a href="#demo">Live demo</a>
+        <a href="https://github.com/xiaobiaodu/mobile-gs" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
       </div>
-    </div>
+    </nav>
+  </header>
 
-  </div>
-</nav>
-
-
-<section class="hero">
-  <div class="hero-body">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">Mobile-GS: Real-time Gaussian Splatting for Mobile Devices</h1>
-                                  <h1 class="title is-3 publication-title">ICLR 2026</h1>
-
-          <div class="is-size-5 publication-authors">
-             <span class="author-block">
-          </div>
-
-        <div class="is-size-5 publication-authors">
-
-
-
-            <!-- <span class="author-block">
-              <a href="https://xiaobiaodu.github.io/">Xiaobiao Du</a><sup></sup></span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span class="author-block">
-              <a href="https://wangyida.github.io/">Yida Wang</a><sup></sup>
-            </span>&nbsp;&nbsp;&nbsp;&nbsp;
-            <span class="author-block">
-              <a >Kun Zhan</a><sup></sup> &nbsp;&nbsp;&nbsp;&nbsp;
-            </span>
-            <span class="author-block">
-              <a href="https://sites.google.com/view/xinyus-homepage/Home">Xin Yu</a><sup></sup>
-            </span>
-          </div> -->
-
-          <div class="column has-text-centered">
-            <div class="publication-links">
-              <!-- PDF Link. -->
-              <span class="link-block">
-               <a href="https://arxiv.org/abs/2603.11531"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fas fa-file-pdf"></i>
-                  </span>
-                  <span>Paper</span>
-                </a>
-              </span>
-              <span class="link-block">
-              
-<!--                <a href="https://arxiv.org/abs/2011.12948"-->
-<!--                   class="external-link button is-normal is-rounded is-dark">-->
-<!--                  <span class="icon">-->
-<!--                      <i class="ai ai-arxiv"></i>-->
-<!--                  </span>-->
-<!--                  <span>arXiv</span>-->
-<!--                </a>-->
-              </span>
-              <!-- Video Link. -->
-              <span class="link-block">
-<!--                <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"-->
-<!--                   class="external-link button is-normal is-rounded is-dark">-->
-<!--                  <span class="icon">-->
-<!--                      <i class="fab fa-youtube"></i>-->
-<!--                  </span>-->
-<!--                  <span>Video</span>-->
-<!--                </a>-->
-              </span>
-              <!-- Code Link. -->
-              <span class="link-block">
-               <a href="https://github.com/xiaobiaodu/mobile-gs" 
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fab fa-github"></i>
-                  </span>
-                  <span>Code</span>
-                  </a>
-              </span>
-            </div>
-
-          </div>
+  <main id="top">
+    <section class="hero-section shell">
+      <div class="hero-copy reveal">
+        <div class="eyebrow"><span></span> ICLR 2026</div>
+        <h1>Gaussian splats,<br><em>untethered.</em></h1>
+        <p class="hero-lede">Real-time, high-quality 3D Gaussian Splatting designed from the ground up for mobile hardware.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="https://arxiv.org/abs/2603.11531" target="_blank" rel="noopener"><i class="fas fa-file-alt" aria-hidden="true"></i> Read the paper</a>
+          <a class="button button-secondary" href="https://github.com/xiaobiaodu/mobile-gs" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> View code</a>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+      <div class="hero-metrics reveal" aria-label="Key results">
+        <div class="metric metric-main"><span class="metric-value">116</span><span class="metric-unit">FPS</span><p>at 1600 × 1063 on Snapdragon 8 Gen 3</p></div>
+        <div class="metric"><span class="metric-value">4.8</span><span class="metric-unit">MB</span><p>compact scene representation</p></div>
+        <div class="metric"><span class="metric-value">1098</span><span class="metric-unit">FPS</span><p>desktop rendering on unbounded scenes</p></div>
+      </div>
+    </section>
 
+    <section class="media-section shell reveal" aria-label="Mobile-GS teaser video">
+      <div class="media-frame">
+        <video id="teaser" autoplay muted loop playsinline controls preload="metadata"><source src="static/videos/teaser.mp4" type="video/mp4">Your browser does not support HTML video.</video>
+        <div class="media-label"><span class="live-dot"></span> Real-time mobile capture</div>
+      </div>
+      <p class="media-caption">Fluent, free-viewpoint rendering of challenging unbounded scenes—directly on a phone.</p>
+    </section>
 
+    <section class="section shell" id="overview">
+      <div class="section-heading reveal"><div class="section-index">01 / Overview</div><h2>Desktop-class rendering.<br>Now in your pocket.</h2></div>
+      <div class="overview-grid">
+        <p class="lead-copy reveal">3D Gaussian Splatting delivers exceptional visual quality, but its sorting overhead and storage footprint make mobile deployment difficult. Mobile-GS removes those constraints without giving up fidelity.</p>
+        <div class="abstract-copy reveal"><p>We identify alpha blending—and its costly depth sorting—as the primary computational bottleneck. Our depth-aware order-independent renderer eliminates sorting and renders all Gaussians associated with a target pixel in a single pass.</p><p>A neural view-dependent enhancement strategy restores accurate appearance in overlapping geometry, while spherical harmonics distillation, neural vector quantization, and contribution-based pruning dramatically reduce storage.</p></div>
+      </div>
+    </section>
 
-<section >
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <video id="teaser" autoplay muted loop playsinline >
-        <source src="static/videos/teaser.mp4"
-                type="video/mp4">
-      </video>
-      <h2 class="subtitle has-text-centered">
-        <span class="highlight" >Mobile-GS</span> achieves real-time rendering for challenging unbounded scenes on mobile platforms. It easily break through the 120 display FPS limit for fluent rendering</span>
-      </h2>
-    </div>
-  </div>
-</section>
-
-
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Try Mobile Rendering on Your Phone!</h2>
-        <div class="content has-text-centered">
-          <div class="publication-links">
-            <span class="link-block">
-              <a href="render_garden/index.html" class="external-link button is-normal is-rounded is-dark">
-                <span>Garden</span>
-              </a>
-            </span>
-            <span class="link-block">
-              <a href="render_bicycle/index.html" class="external-link button is-normal is-rounded is-dark">
-                <span>Bicycle</span>
-              </a>
-            </span>
-            <span class="link-block">
-              <a href="render_counter/index.html" class="external-link button is-normal is-rounded is-dark">
-                <span>Counter</span>
-              </a>
-            </span>
-
-            <span class="link-block">
-              <a href="render_truck/index.html" class="external-link button is-normal is-rounded is-dark">
-                <span>Truck</span>
-              </a>
-            </span>
-
-
-
-          </div>
+    <section class="demo-section" id="demo">
+      <div class="shell">
+        <div class="demo-header reveal"><div><div class="section-index section-index-light">Interactive demo</div><h2>Try it on your phone.</h2></div><p>Choose a scene, drag to explore, and experience Gaussian Splatting in your mobile browser.</p></div>
+        <div class="scene-grid reveal">
+          <a class="scene-card" href="render_garden/index.html"><span class="scene-number">01</span><span class="scene-name">Garden</span><span class="scene-arrow" aria-hidden="true">↗</span><span class="scene-orbit scene-orbit-a" aria-hidden="true"></span></a>
+          <a class="scene-card" href="render_bicycle/index.html"><span class="scene-number">02</span><span class="scene-name">Bicycle</span><span class="scene-arrow" aria-hidden="true">↗</span><span class="scene-orbit scene-orbit-b" aria-hidden="true"></span></a>
+          <a class="scene-card" href="render_counter/index.html"><span class="scene-number">03</span><span class="scene-name">Counter</span><span class="scene-arrow" aria-hidden="true">↗</span><span class="scene-orbit scene-orbit-c" aria-hidden="true"></span></a>
+          <a class="scene-card" href="render_truck/index.html"><span class="scene-number">04</span><span class="scene-name">Truck</span><span class="scene-arrow" aria-hidden="true">↗</span><span class="scene-orbit scene-orbit-d" aria-hidden="true"></span></a>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <!-- Abstract. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
-          <p>
-
- 3D Gaussian Splatting (3DGS) has emerged as a powerful representation for high-quality rendering across a wide range of applications.
-    However, its high computational demands and large storage costs pose significant challenges for deployment on mobile devices.
-    In this work, we propose a mobile-tailored real-time Gaussian Splatting method, dubbed Mobile-GS, enabling efficient inference of Gaussian Splatting on edge devices.
-    Specifically, we first identify alpha blending as the primary computational bottleneck, since it relies on the time-consuming Gaussian depth sorting process.
-    To solve this issue, we propose a depth-aware order-independent rendering scheme that eliminates the need for sorting, thereby substantially accelerating rendering.
-    Although this order-independent rendering improves rendering speed, it may introduce transparency artifacts in regions with overlapping geometry due to the scarcity of rendering order.
-    To address this problem, we propose a neural view-dependent enhancement strategy, enabling more accurate modeling of view-dependent effects conditioned on viewing direction, 3D Gaussian geometry, and appearance attributes.
-    In this way, Mobile-GS can achieve both high-quality and real-time rendering.
-        Furthermore, to facilitate deployment on memory-constrained mobile platforms, we introduce first-degree spherical harmonics distillation, a neural vector quantization technique, and a contribution-based pruning strategy to reduce the number of Gaussian primitives and compress the 3D Gaussian representation with the assistance of neural networks.
-    Extensive experiments demonstrate that our proposed Mobile-GS achieves real-time rendering and compact model size while preserving high visual quality, making it well-suited for mobile applications.
-    Code will be released.
- <p>
-
-        </div>
+    <section class="section shell" id="method">
+      <div class="section-heading method-heading reveal"><div class="section-index">02 / Method</div><h2>Sort less.<br>Render more.</h2><p>Three tightly integrated ideas make high-quality Gaussian Splatting practical on constrained hardware.</p></div>
+      <div class="method-grid">
+        <article class="method-card reveal"><div class="method-number">01</div><div class="method-visual visual-sort" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><h3>Order-independent rendering</h3><p>Depth-aware blending removes the expensive per-tile Gaussian sorting stage and processes a pixel's Gaussians in one pass.</p><span class="method-tag">No sorting</span></article>
+        <article class="method-card reveal"><div class="method-number">02</div><div class="method-visual visual-view" aria-hidden="true"><div class="view-core"></div><i></i><i></i><i></i></div><h3>View-dependent enhancement</h3><p>A lightweight MLP predicts view-dependent opacity from geometry, appearance attributes, and viewing direction.</p><span class="method-tag">Better fidelity</span></article>
+        <article class="method-card reveal"><div class="method-number">03</div><div class="method-visual visual-compress" aria-hidden="true"><div class="compress-before"></div><span>→</span><div class="compress-after"></div></div><h3>Neural compression</h3><p>SH distillation, vector quantization, and contribution-based pruning create a compact mobile-ready representation.</p><span class="method-tag">4.8 MB scenes</span></article>
       </div>
-    </div>
+    </section>
 
-  </div>
-</section>
+    <section class="finding-section shell reveal">
+      <div class="finding-label">Key finding</div><blockquote>Sorting was the bottleneck.<br><em>So we removed it.</em></blockquote><p>Runtime analysis shows that sorting dominates inference cost in standard 3DGS. Removing it unlocks several-fold acceleration, while our learned appearance model preserves visual quality.</p>
+    </section>
 
-<hr>
+    <section class="paper-section shell reveal"><div class="paper-card"><div><div class="section-index section-index-light">Mobile-GS · ICLR 2026</div><h2>Explore the full research.</h2></div><div class="paper-actions"><a href="https://arxiv.org/abs/2603.11531" target="_blank" rel="noopener">Paper <span>↗</span></a><a href="https://github.com/xiaobiaodu/mobile-gs" target="_blank" rel="noopener">Code <span>↗</span></a></div></div></section>
+  </main>
 
-</section class="section">
-  <div class="container is-max-desktop">
-        <h2 class="title is-3">Introduction</h2>
-
-      <img src="static/images/teaser.png" alt="">
-<p>
-   <span class="highlight" >Mobile-GS</span> is the first real-time Gaussian Splatting method that can reach 116 FPS rendering speed in the 1600 x 1063 resolution on the mobile equipped with the Snapdragon 8 Gen 3 GPU as shown in (a).
-  We evaluate rendering quality, storage costs, and inference speed on an RTX 3090 GPU in (b) and (c).
-  Our Mobile-GS integrates depth-aware order-independent rendering, compression,
-    and distillation techniques to deliver comparable rendering quality compared with the original 3DGS, 
-    while substantially reducing the storage requirements to <span class="highlight" >4.8MB</span> and achieving <span class="highlight" >1098FPS</span> on the unbounded scene, thereby enabling efficient deployment on mobile devices.
-    
-</p>
-
-  </div>
-</section>
-
-<hr>
-
-</section class="section">
-  <div class="container is-max-desktop">
-        <h2 class="title is-3">Motivation</h2>
-
-      <img src="static/images/motivation.png" alt="">
-<p>
-    <span class="highlight" >We found sorting as the primary performance bottleneck.</span>
-
-  <span class="highlight" >Left:</span> Runtime analysis of the original 3DGS highlights that the sorting operation incurs a significant computational overhead during inference.
-  <span class="highlight" >Right:</span> Removing the sorting step substantially accelerates 3DGS, achieving several-fold speedup compared to the original implementation.
-</p>
-
-  </div>
-</section>
-
-<hr>
-
-</section class="section">
-  <div class="container is-max-desktop">
-        <h2 class="title is-3">Rendering Pipeline</h2>
-
-      <img src="static/images/method.png" alt="">
-<p>
-
-    In the inference stage, different from 3DGS, our proposed method eliminates the tile-based rendering and the 3D Gaussian sorting process typically required for accurate alpha blending. 
-    Instead, we render all 3D Gaussians associated with a target pixel in a single pass. 
-    To further improve performance and maintain visual quality, we propose a depth-aware order-independent rendering strategy that replaces the original sorting-dependent alpha blending.
-</p>
-
-  </div>
-</section>
-
-
-<hr>
-
-</section class="section">
-  <div class="container is-max-desktop">
-        <h2 class="title is-3">High-valued Opacity</h2>
-
-      <img src="static/images/opacity.png" alt="">
-<p>
-
-Left: We leverage an MLP fed with 3D Gaussian scale, rotation, spherical harmonics, and the vector of the camera toward the 3D Gaussian as input to predict a view-dependent opacity.
-    Right:  We display that our Mobile-GS removes redundant opacity and keeps important Gaussians with high opacity.
-</p>
-
-  </div>
-</section>
-
-<hr>
-
-</section class="section">
-  <div class="container is-max-desktop">
-        <h2 class="title is-3">Runtime Analysis</h2>
-
-      <img src="static/images/runtime.png" alt="">
-<p>
-
-We further provide a detailed runtime analysis of our proposed Mobile-GS evaluated on four representative scenes, covering both indoor and 
-outdoor environments from the Mip-NeRF 360 dataset. The reported runtime accounts for all essential components involved in the rendering pipeline, 
-including the lightweight MLPs used for view-dependent effects.
- Despite the inclusion of MLPs, which are often regarded as computationally demanding, our design introduces minimal overhead.
-  This demonstrates that Mobile-GS maintains a favorable balance between computational efficiency and model expressiveness, 
-  ensuring real-time performance without compromising visual fidelity.
-
-</p>
-
-  </div>
-</section>
-
-<hr>
-
-<!-- </section class="section">
-  <div class="container is-max-desktop">
-
-        <h2 class="title is-3">Compare with 3DGS</h2>
-
-      <video autoplay muted loop playsinline controls>
-        <source src="./static/videos/bicycle.mp4"
-                type="video/mp4">
-      </video>
-    <video autoplay muted loop playsinline controls>
-        <source src="./static/videos/garden.mp4"
-                type="video/mp4">
-      </video>
-
-        <video autoplay muted loop playsinline controls>
-        <source src="./static/videos/room.mp4"
-                type="video/mp4">
-      </video>
-
-
-      <video autoplay muted loop playsinline controls>
-        <source src="./static/videos/kitchen.mp4"
-                type="video/mp4">
-      </video>
-  </div>
-</section> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<footer class="footer">
-  <div class="container">
-    <div class="content has-text-centered">
-    </div>
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
-          <p>
-            This website is licensed under a <a rel="license"
-                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
-
+  <footer class="footer shell"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Mobile-GS</span></a><p>Real-time Gaussian Splatting for mobile devices.</p><p class="license">Website content available under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</p></footer>
 </body>
 </html>
